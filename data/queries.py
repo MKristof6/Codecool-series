@@ -9,6 +9,13 @@ def count_pages():
     return data_manager.execute_select('SELECT COUNT(id) from shows;')
 
 
+def get_genres():
+    query = """
+    select id, name from genres
+    """
+    return data_manager.execute_select(query)
+
+
 def get_seasons(show_id):
     query = """
     SELECT shows.id, season_number, seasons.title, seasons.overview from shows
@@ -53,3 +60,17 @@ def show_data_by_id(show_id):
     GROUP BY shows.id, shows.title, shows.year, shows.runtime, shows.trailer, shows.homepage, shows.rating, actors.name;
     """
     return data_manager.execute_select(query, {'s_id': show_id})
+
+
+def get_show_by_genre(max_actors, genre):
+    query = """
+        select shows.title, round(rating, 1)::float as rating, EXTRACT(YEAR from year) as year, g.name, count(sc.show_id) as actor_count  from shows
+        left join show_genres sg on shows.id = sg.show_id
+        left join genres g on g.id = sg.genre_id
+        left join show_characters sc on shows.id = sc.show_id
+        where g.name = %(genre_n)s
+        group by shows.rating, shows.year, g.name, shows.title
+        having count(sc.show_id) < %(max_actors)s
+        order by actor_count;
+                """
+    return data_manager.execute_select(query, {'max_actors':max_actors, 'genre_n':genre})

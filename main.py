@@ -4,18 +4,20 @@ import math
 from dotenv import load_dotenv
 
 load_dotenv()
-app = Flask('codecool_series')
+app = Flask('Codecool_series')
+
 
 @app.route('/')
 def index():
     shows = queries.get_shows()
     return render_template('index.html', shows=shows)
 
+
 @app.route('/shows/most-rated/<page_number>')
 def shows_most_rated(page_number):
     page_size = 15
     page_number = int(page_number)
-    page_start = (page_number -1) * page_size
+    page_start = (page_number - 1) * page_size
     shows = queries.get_most_rated(page_start, page_size)
     count = queries.count_pages()[0]['count']
     number_of_shows = int(count / 15)
@@ -37,17 +39,31 @@ def shows_page(show_id):
         runtime = f'{hour}h{minute}m'
     else:
         runtime = f'{minute}m'
-    return render_template('shows-page.html', show=show_data, seasons=season_data, video_id=video_id, actors_num=actors_num, runtime=runtime)
+    return render_template('shows-page.html', show=show_data, seasons=season_data, video_id=video_id,
+                           actors_num=actors_num, runtime=runtime)
 
 
-@app.route('/seasons')
+@app.route('/shows')
 def seasons():
     return render_template('search-for-show.html')
 
 
-@app.route('/get-seasons/<letter>')
+@app.route('/get-shows/<letter>')
 def get_seasons(letter):
     data = queries.get_show_by_season(letter)
+    return jsonify(data)
+
+
+@app.route('/shows-by-genre')
+def genres():
+    data = queries.get_genres()
+    return render_template('shows_by_genre.html', genres=data)
+
+
+@app.route('/get-shows-by-genre/<genre>')
+def get_shows(genre):
+    max_actors = 20
+    data = queries.get_show_by_genre(max_actors, genre)
     return jsonify(data)
 
 
