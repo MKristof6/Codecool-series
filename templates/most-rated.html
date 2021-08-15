@@ -38,7 +38,7 @@
         <div id="header-auth">
             <button type="button" id="bt-register">Register</button>
             <button type="button" id="bt-login">Login</button>
-            <input type="text" >
+            <input type="text">
         </div>
     </header>
     <section>
@@ -79,6 +79,41 @@
                     </tbody>
                 {% endfor %}
             </table>
+            <div class="pagination">
+                {% if page_number <=5 %}
+                    <a href="/shows/most-rated/{{ page_number }}" class="inactive"><<</a>
+                {% else %}
+                    <a href="/shows/most-rated/{{ page_number-5 }}"><<</a>
+                {% endif %}
+                {% if page_number <=1 %}
+                    <a href="/shows/most-rated/{{ page_number }}" class="inactive"><</a>
+                {% else %}
+                    <a href="/shows/most-rated/{{ page_number-1 }}"><</a>
+                {% endif %}
+                {% for i in range(1,num_of_pages) %}
+                    {% if i == page_number -2 %}
+                        <a href="/shows/most-rated/{{ page_number-2 }}">{{ page_number-2 }}</a>
+                    {% elif i == page_number -1 %}
+                        <a href="/shows/most-rated/{{ page_number-1 }}">{{ page_number-1 }}</a>
+                    {% elif i == page_number %}
+                        <a class="active">{{ page_number }}</a>
+                    {% elif i == page_number +1 %}
+                        <a href="/shows/most-rated/{{ page_number + 1 }}">{{ page_number + 1 }}</a>
+                    {% elif i == page_number +2 %}
+                        <a href="/shows/most-rated/{{ page_number + 2 }}">{{ page_number + 2 }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_number >= num_of_pages - 1 %}
+                    <a href="/shows/most-rated/{{ page_number }}" class="inactive">></a>
+                {% else %}
+                    <a href="/shows/most-rated/{{ page_number + 1 }}">></a>
+                {% endif %}
+                {% if page_number >= num_of_pages - 5 %}
+                    <a href="/shows/most-rated/{{ page_number }}" class="inactive">>></a>
+                {% else %}
+                    <a href="/shows/most-rated/{{ page_number + 5 }}">>></a>
+                {% endif %}
+            </div>
         </div>
     </section>
     <footer>
