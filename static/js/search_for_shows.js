@@ -1,5 +1,5 @@
 function getData(letter){
-    fetch(`/get-seasons/${letter}`)
+    fetch(`/get-shows/${letter}`)
         .then(response => response.json())
         .then(data => getElementsData(data))
         .catch(error => console.log(error))

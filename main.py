@@ -40,14 +40,27 @@ def shows_page(show_id):
     return render_template('shows-page.html', show=show_data, seasons=season_data, video_id=video_id, actors_num=actors_num, runtime=runtime)
 
 
-@app.route('/seasons')
+@app.route('/shows')
 def seasons():
     return render_template('search-for-show.html')
 
 
-@app.route('/get-seasons/<letter>')
+@app.route('/get-shows/<letter>')
 def get_seasons(letter):
     data = queries.get_show_by_season(letter)
+    return jsonify(data)
+
+
+@app.route('/genres')
+def genres():
+    data= queries.get_genres()
+    return render_template('queries.html', genres=data)
+
+
+@app.route('/get-shows/<genre>')
+def get_shows(genre):
+    max_actors = 20
+    data = queries.get_show_by_genre(max_actors, genre)
     return jsonify(data)
 
 
