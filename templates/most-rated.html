@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title>Shows</title>
+
+    <!-- Import Montserrat font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <!-- Normalize.css fixes lot of differences between browsers default styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"/>
+
+    <!-- project wide styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/site.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/background.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/card.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/table.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/grid.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/utils.css') }}">
+
+    <!-- page specific styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/pagination.css') }}">
+</head>
+
+<body>
+<div id="body-wrapper">
+    <header class="clearfix">
+        <img id="header-logo" src="{{ url_for('static', filename='assets/codecool-logo.png') }}" alt="Codecool Logo">
+        <span id="header-title" class="title">Codecool Series DB</span>
+        <div id="header-auth">
+            <button type="button" id="bt-register">Register</button>
+            <button type="button" id="bt-login">Login</button>
+            <input type="text">
+        </div>
+    </header>
+    <section>
+        <h1 class="title text-center">Shows</h1>
+
+        <div class="card">
+            <table>
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Year</th>
+                    <th>Runtime(min)</th>
+                    <th>Rating</th>
+                    <th>Genres</th>
+                    <th>Trailer</th>
+                    <th>Homepage</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for show in shows %}
+                    <tr>
+                        <td><a href="{{ '/show/' + (show['id'] | string) }}">{{ show['title'] }}</a></td>
+                        <td>{{ show['year'] }}</td>
+                        <td>{{ show['runtime'] }}</td>
+                        <td>{{ show['rating'] }}</td>
+                        <td>{{ show['names'] }}</td>
+                        {% if show.trailer %}
+                            <td><a href="{{ show['trailer'] }}">{{ show['trailer'] }}</a></td>
+                        {% else %}
+                            <td>NO URL</td>
+                        {% endif %}
+                        {% if show.homepage %}
+                            <td><a href="{{ show['homepage'] }}">{{ show['homepage'] }}</a></td>
+                        {% else %}
+                            <td>NO URL</td>
+                        {% endif %}
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+            <div class="pagination">
+                {% if page_number <=5 %}
+                    <a href="/shows/most-rated/{{ page_number }}" class="inactive"><<</a>
+                {% else %}
+                    <a href="/shows/most-rated/{{ page_number-5 }}"><<</a>
+                {% endif %}
+                {% if page_number <=1 %}
+                    <a href="/shows/most-rated/{{ page_number }}" class="inactive"><</a>
+                {% else %}
+                    <a href="/shows/most-rated/{{ page_number-1 }}"><</a>
+                {% endif %}
+                {% for i in range(1,num_of_pages) %}
+                    {% if i == page_number -2 %}
+                        <a href="/shows/most-rated/{{ page_number-2 }}">{{ page_number-2 }}</a>
+                    {% elif i == page_number -1 %}
+                        <a href="/shows/most-rated/{{ page_number-1 }}">{{ page_number-1 }}</a>
+                    {% elif i == page_number %}
+                        <a class="active">{{ page_number }}</a>
+                    {% elif i == page_number +1 %}
+                        <a href="/shows/most-rated/{{ page_number + 1 }}">{{ page_number + 1 }}</a>
+                    {% elif i == page_number +2 %}
+                        <a href="/shows/most-rated/{{ page_number + 2 }}">{{ page_number + 2 }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_number >= num_of_pages - 1 %}
+                    <a href="/shows/most-rated/{{ page_number }}" class="inactive">></a>
+                {% else %}
+                    <a href="/shows/most-rated/{{ page_number + 1 }}">></a>
+                {% endif %}
+                {% if page_number >= num_of_pages - 5 %}
+                    <a href="/shows/most-rated/{{ page_number }}" class="inactive">>></a>
+                {% else %}
+                    <a href="/shows/most-rated/{{ page_number + 5 }}">>></a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <footer>
+        Copyright, bla-bla
+    </footer>
+</div>
+
+
+<div class="background">
+    <div class="dark-blue-layer"></div>
+    <div class="light-blue-layer"></div>
+</div>
+</body>
+</html>
