@@ -10,13 +10,22 @@ def count_pages():
 
 
 def get_seasons(show_id):
-    query="""
+    query = """
     SELECT shows.id, season_number, seasons.title, seasons.overview from shows
     JOIN seasons on shows.id = seasons.show_id
     WHERE shows.id = %(s_id)s
     ORDER BY season_number;
     """
     return data_manager.execute_select(query, {'s_id': show_id})
+
+
+def get_show_by_season(letter):
+    query = """
+    SELECT shows.title from shows
+    left join seasons s on shows.id = s.show_id
+    WHERE s.title = 'Specials' AND shows.title ILIKE %(letter)s
+    """
+    return data_manager.execute_select(query, {'letter': '%' + letter + '%'})
 
 
 def get_most_rated(page_start, page_size):

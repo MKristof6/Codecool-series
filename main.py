@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, jsonify
 from data import queries
 import math
 from dotenv import load_dotenv
@@ -38,6 +38,17 @@ def shows_page(show_id):
     else:
         runtime = f'{minute}m'
     return render_template('shows-page.html', show=show_data, seasons=season_data, video_id=video_id, actors_num=actors_num, runtime=runtime)
+
+
+@app.route('/seasons')
+def seasons():
+    return render_template('search-for-show.html')
+
+
+@app.route('/get-seasons/<letter>')
+def get_seasons(letter):
+    data = queries.get_show_by_season(letter)
+    return jsonify(data)
 
 
 def main():
