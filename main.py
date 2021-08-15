@@ -22,6 +22,24 @@ def shows_most_rated(page_number):
     return render_template('most-rated.html', shows=shows, num_of_pages=number_of_shows, page_number=page_number)
 
 
+@app.route('/show/<show_id>')
+def shows_page(show_id):
+    show_data = queries.show_data_by_id(show_id)
+    actors_num = len(show_data)
+    video_id = show_data[0]['trailer'][27:]
+    season_data = queries.get_seasons(show_id)
+    hour = 0
+    while show_data[0]['runtime'] > 60:
+        show_data[0]['runtime'] -= 60
+        hour += 1
+    minute = show_data[0]['runtime']
+    if hour != 0:
+        runtime = f'{hour}h{minute}m'
+    else:
+        runtime = f'{minute}m'
+    return render_template('shows-page.html', show=show_data, seasons=season_data, video_id=video_id, actors_num=actors_num, runtime=runtime)
+
+
 def main():
     app.run(debug=False)
 
