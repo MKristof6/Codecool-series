@@ -31,27 +31,27 @@
         <span id="header-title" class="title">
                     Codecool Series DB
                 </span>
-        <div id="header-auth">
-            <button type="button" id="bt-register">Register</button>
-            <button type="button" id="bt-login">Login</button>
-        </div>
     </header>
     <section>
         <div class="card">
-            {% for genre in genres %}
-            <span id="genre">{{ genre.name }}</span>
-            {% endfor %}
-        </div>
 
+            <select id="genre_select" name="genre_select">
+                {% for genre in genres %}
+                    <option value="{{ genre['id'] }}">{{ genre['name'] }}</option>
+                {% endfor %}
+            </select>
+
+            <button id="select_button">Select</button>
+        </div>
 
         <div class="card">
             <table id="container">
 
             </table>
+
         </div>
-
-
     </section>
+
     <footer>
         Copyright, bla-bla
     </footer>

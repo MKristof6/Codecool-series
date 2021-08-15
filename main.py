@@ -60,11 +60,12 @@ def genres():
     return render_template('shows_by_genre.html', genres=data)
 
 
-@app.route('/get-shows-by-genre/<genre>')
-def get_shows(genre):
-    max_actors = 20
-    data = queries.get_show_by_genre(max_actors, genre)
-    return jsonify(data)
+@app.route('/get-shows-by-genre/<genre_id>')
+def get_shows(genre_id):
+    page_size = 50
+    min_episodes = 20
+    shows = queries.get_episodes(genre_id, page_size, min_episodes)
+    return jsonify(shows)
 
 
 def main():
