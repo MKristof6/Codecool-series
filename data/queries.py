@@ -11,8 +11,10 @@ def count_pages():
 
 def get_genres():
     query = """
-    select id, name from genres
-    """
+        select distinct  id, name from genres
+        order by name
+        """
+
     return data_manager.execute_select(query)
 
 
@@ -62,15 +64,17 @@ def show_data_by_id(show_id):
     return data_manager.execute_select(query, {'s_id': show_id})
 
 
-def get_show_by_genre(max_actors, genre):
+def get_episodes(genre_id, page_size, min_episodes):
     query = """
-        select shows.title, round(rating, 1)::float as rating, EXTRACT(YEAR from year) as year, g.name, count(sc.show_id) as actor_count  from shows
-        left join show_genres sg on shows.id = sg.show_id
-        left join genres g on g.id = sg.genre_id
-        left join show_characters sc on shows.id = sc.show_id
-        where g.name = %(genre_n)s
-        group by shows.rating, shows.year, g.name, shows.title
-        having count(sc.show_id) < %(max_actors)s
-        order by actor_count;
-                """
-    return data_manager.execute_select(query, {'max_actors':max_actors, 'genre_n':genre})
+    select shows.title, g.id, count(distinct s.show_id) as season_count, count(distinct e.season_id) as episode_count from shows
+    left join show_genres sg on shows.id = sg.show_id
+    left join genres g on g.id = sg.genre_id
+    left join seasons s on shows.id = s.show_id
+    left join episodes e on s.id = e.season_id
+    where g.id = %(genre_id)s
+    group by g.id, shows.title
+    having count(distinct e.season_id) >= %(min_episodes)s
+    order by episode_count desc
+    limit %(page_size)s
+    """
+    return data_manager.execute_select(query,{'genre_id':genre_id, 'page_size':page_size, 'min_episodes':min_episodes})
