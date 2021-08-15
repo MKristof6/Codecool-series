@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
 
-    <title>Genres</title>
+    <title>Shows By Genres</title>
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style/utils.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/detailed-view.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename='js/shows_by_genre.js') }}" defer></script>
+
 </head>
 
 <body>
@@ -31,6 +32,11 @@
         <span id="header-title" class="title">
                     Codecool Series DB
                 </span>
+        <div id="header-auth">
+            <button type="button" id="bt-register">Register</button>
+            <button type="button" id="bt-login">Login</button>
+            <a class="link" href="/">Back</a>
+        </div>
     </header>
     <section>
         <div class="card">

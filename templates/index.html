@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
 
-    <title>CsED</title>
+    <title>Tv shows</title>
 
     <!-- Import Montserrat font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
@@ -44,22 +44,25 @@
         <h1 class="title text-center">Welcome page</h1>
         <div class="card">
             <h2>Welcome TV show lovers!</h2>
-            <p>This great site is happy to bring you your favourite TV show's <i>details</i>.</p>
-            <p></p>
-            <p>Okay, actually this is a designed dumb page without any logic.</p>
-            <p>You can find a navigational element, the so called "breadcrumb" above the page's title. Use it for
-                in-depth
-                navigation.
-            </p>
-        </div>
-        <div class="card">
+
             <ul>
-                {% for show in shows %}
-                    <li>
-                        <a href="{{ '/tv-show/' + (show['id'] | string) }}">{{ show['title'] }}</a>
-                    </li>
-                {% endfor %}
+                <li>
+                    <a class="link" href="/shows/most-rated/1">Most rated shows</a> <br>
+                </li>
+                <li>
+                    <a class="link" href="/shows">Search for shows</a><br>
+                </li>
+                <li>
+                    <a class="link" href="/shows-by-genre">Search for shows by genre</a><br>
+                </li>
             </ul>
+
+        </div>
+
+        <div class="list-card">
+            {% for show in shows %}
+                <a class="link" href="{{ '/show/' + (show['id'] | string) }}"> - {{ show['title'] }} |</a>
+            {% endfor %}
         </div>
     </section>
     <footer>
